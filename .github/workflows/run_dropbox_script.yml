@@ -1,4 +1,4 @@
-name: Run main.sh Script
+name: run process_pdf_to_text script
 
 on:
   workflow_dispatch: # Enables manual trigger via "Run workflow" button
