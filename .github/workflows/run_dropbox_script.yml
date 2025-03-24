@@ -1,0 +1,38 @@
+name: Run main.sh Script
+
+on:
+  workflow_dispatch: # Enables manual trigger via "Run workflow" button
+
+jobs:
+  execute-shell-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          pip install dropbox requests
+
+      # Step 4: Grant execution permissions for the shell script
+      - name: Make main.sh executable
+        run: chmod +x ./main.sh
+
+      # Step 5: Run main.sh
+        env:
+          APP_KEY: ${{ secrets.APP_KEY }}
+          APP_SECRET: ${{ secrets.APP_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+        run: ./main.sh
+
+
+
