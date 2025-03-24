@@ -83,14 +83,9 @@ else
     exit 1
 fi
 
-# Ask whether to delete the merged PDF
-read -p "Do you want to delete the merged.pdf file? (y/n): " delete_choice
-if [ "$delete_choice" == "y" ]; then
-    rm "$pdf_path"
-    echo "The merged.pdf file was deleted."
-else
-    echo "The merged.pdf file was not deleted."
-fi
+# delete the merged PDF
+rm "$pdf_path"
+echo "The merged.pdf file was deleted."
 
 
 
