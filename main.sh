@@ -23,5 +23,14 @@ else
     exit 1
 fi
 
+# Run the upload script to replace or create merged.txt in Dropbox
+if [ -f ./upload_to_dropbox.py ]; then
+    echo "Running upload_to_dropbox.py to upload merged.txt..."
+    python3 upload_to_dropbox.py "$REFRESH_TOKEN" "$APP_KEY" "$APP_SECRET"
+else
+    echo "upload_to_dropbox.py is not found."
+    exit 1
+fi
+
 
 
