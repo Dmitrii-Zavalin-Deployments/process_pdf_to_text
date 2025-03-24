@@ -26,7 +26,6 @@ def download_pdfs_from_dropbox(dropbox_folder, local_folder, refresh_token, clie
 
     with open(log_file_path, "a") as log_file:
         log_file.write("Starting download process...\n")
-        print("Starting download process...")  # Print to GitHub Actions logs
         try:
             os.makedirs(local_folder, exist_ok=True)
 
@@ -48,8 +47,6 @@ def download_pdfs_from_dropbox(dropbox_folder, local_folder, refresh_token, clie
                 log_file.write(f"Listing files in Dropbox folder: {dropbox_folder}\n")
 
                 for entry in result.entries:
-                    log_file.write(f"Found entry: {entry.name}\n")
-                    print(f"Found entry: {entry.name}")  # Print to GitHub Actions logs
                     if isinstance(entry, dropbox.files.FileMetadata) and entry.name.endswith('.pdf'):
                         file_name_without_extension = os.path.splitext(entry.name)[0]
                         if not files_to_download or file_name_without_extension in files_to_download:
@@ -58,19 +55,18 @@ def download_pdfs_from_dropbox(dropbox_folder, local_folder, refresh_token, clie
                                 metadata, res = dbx.files_download(path=entry.path_lower)
                                 f.write(res.content)
                             log_file.write(f"Downloaded {entry.name} to {local_path}\n")
-                            print(f"Downloaded {entry.name} to {local_path}")  # Print to GitHub Actions logs
+                            print(entry.name)  # Print only the name of the downloaded file to GitHub Actions logs
 
                 has_more = result.has_more
                 cursor = result.cursor
 
             log_file.write("Download completed successfully.\n")
-            print("Download completed successfully.")  # Print to GitHub Actions logs
         except dropbox.exceptions.ApiError as err:
             log_file.write(f"Error downloading files: {err}\n")
-            print(f"Error downloading files: {err}")  # Print to GitHub Actions logs
+            print(f"Error downloading files: {err}")  # Log the error in GitHub Actions
         except Exception as e:
             log_file.write(f"Unexpected error: {e}\n")
-            print(f"Unexpected error: {e}")  # Print to GitHub Actions logs
+            print(f"Unexpected error: {e}")  # Log the error in GitHub Actions
 
 # Entry point for the script
 if __name__ == "__main__":
