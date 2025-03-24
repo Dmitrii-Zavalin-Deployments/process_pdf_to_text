@@ -14,5 +14,14 @@ mkdir -p $LOCAL_FOLDER
 # Run the Python script to call the download function
 python3 download_from_dropbox.py "$DROPBOX_FOLDER" "$LOCAL_FOLDER" "$REFRESH_TOKEN" "$APP_KEY" "$APP_SECRET" "$LOG_FILE"
 
+# Run the additional processing shell script
+if [ -x ./process_downloaded_pdfs.sh ]; then
+    echo "Running process_downloaded_pdfs.sh..."
+    ./process_downloaded_pdfs.sh
+else
+    echo "process_downloaded_pdfs.sh is not found or not executable."
+    exit 1
+fi
+
 
 
