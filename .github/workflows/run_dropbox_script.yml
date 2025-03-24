@@ -27,7 +27,8 @@ jobs:
       - name: Make main.sh executable
         run: chmod +x ./main.sh
 
-      # Step 5: Run main.sh
+      # Step 5: Run the main.sh script
+      - name: Run main.sh
         env:
           APP_KEY: ${{ secrets.APP_KEY }}
           APP_SECRET: ${{ secrets.APP_SECRET }}
