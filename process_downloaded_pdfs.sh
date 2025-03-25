@@ -78,12 +78,22 @@ if [ -f "$txt_path" ] && [ -x ./split_text_to_4000_characters_chunks.sh ]; then
     echo "Splitting $txt_path into smaller chunks..."
     ./split_text_to_4000_characters_chunks.sh "$txt_path"
     echo "Text has been split into chunks."
+
+    # Call split_file.sh to further split the merged.txt file
+    if [ -x ./split_file.sh ]; then
+        echo "Calling split_file.sh to split $txt_path by chunks..."
+        ./split_file.sh "$txt_path"
+        echo "split_file.sh has split $txt_path into smaller files."
+    else
+        echo "split_file.sh is not found or not executable."
+        exit 1
+    fi
 else
     echo "split_text_to_4000_characters_chunks.sh is not found or $txt_path does not exist."
     exit 1
 fi
 
-# delete the merged PDF
+# Delete the merged PDF
 rm "$pdf_path"
 echo "The merged.pdf file was deleted."
 
