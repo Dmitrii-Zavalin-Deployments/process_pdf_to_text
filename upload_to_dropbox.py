@@ -23,7 +23,7 @@ def upload_file_to_dropbox(local_file_path, dropbox_file_path, refresh_token, cl
     # Refresh the access token
     access_token = refresh_access_token(refresh_token, client_id, client_secret)
     dbx = dropbox.Dropbox(access_token)
-    
+
     try:
         with open(local_file_path, "rb") as f:
             dbx.files_upload(f.read(), dropbox_file_path, mode=dropbox.files.WriteMode.overwrite)
@@ -34,15 +34,27 @@ def upload_file_to_dropbox(local_file_path, dropbox_file_path, refresh_token, cl
 # Entry point for the script
 if __name__ == "__main__":
     # Command-line arguments
-    local_file_path = "./downloaded_pdfs/merged.txt"  # Path to the local file
-    dropbox_folder = "/Exchange/WebsitesToPdf"       # Dropbox folder path
-    dropbox_file_path = f"{dropbox_folder}/merged.txt"  # Path to the file in Dropbox
-    refresh_token = sys.argv[1]                     # Dropbox refresh token
-    client_id = sys.argv[2]                         # Dropbox client ID
-    client_secret = sys.argv[3]                     # Dropbox client secret
+    local_directory = "./downloaded_pdfs"          # Path to the directory containing .txt files
+    dropbox_folder = "/Exchange/WebsitesToPdf"     # Dropbox folder path
+    refresh_token = sys.argv[1]                    # Dropbox refresh token
+    client_id = sys.argv[2]                        # Dropbox client ID
+    client_secret = sys.argv[3]                    # Dropbox client secret
 
-    # Call the upload function
-    upload_file_to_dropbox(local_file_path, dropbox_file_path, refresh_token, client_id, client_secret)
+    # Check if the local directory exists
+    if not os.path.isdir(local_directory):
+        print(f"Directory {local_directory} does not exist. Please ensure the directory is available.")
+        sys.exit(1)
+
+    # Iterate through all .txt files in the directory
+    for file_name in os.listdir(local_directory):
+        if file_name.endswith(".txt"):
+            local_file_path = os.path.join(local_directory, file_name)
+            dropbox_file_path = f"{dropbox_folder}/{file_name}"
+
+            # Call the upload function for each file
+            upload_file_to_dropbox(local_file_path, dropbox_file_path, refresh_token, client_id, client_secret)
+
+    print("All .txt files have been uploaded to Dropbox.")
 
 
 
